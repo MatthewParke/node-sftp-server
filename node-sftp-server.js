@@ -131,10 +131,14 @@ var SFTPServer = (function(superClass) {
     if (options.debug) {
       debug = function(msg) { console.log(msg); };
     }
-    SFTPServer.options = options;
-    this.server = new ssh2.Server({
+    let serverOptions = {
       hostKeys: [fs.readFileSync(options.privateKeyFile)]
-    }, (function(_this) {
+    }
+    if(options.algorithms){
+      serverOptions.algorithms = options.algorithms;
+    }
+    SFTPServer.options = options;
+    this.server = new ssh2.Server(serverOptions, (function(_this) {
       return function(client, info) {
         client.on('error', function(err) {
           debug("SFTP Server: error");
