@@ -131,8 +131,16 @@ var SFTPServer = (function(superClass) {
     if (options.debug) {
       debug = function(msg) { console.log(msg); };
     }
+    // Treat Buffer
+    let hostKeys = [];
+    if (typeof options.privateKeyFile === 'string') {
+      hostKeys.push(fs.readFileSync(options.privateKeyFile));
+    }
+    else if (Buffer.isBuffer(options.privateKeyFile)) {
+      hostKeys.push(options.privateKeyFile);
+    }
     let serverOptions = {
-      hostKeys: [fs.readFileSync(options.privateKeyFile)]
+      hostKeys
     }
     if(options.algorithms){
       serverOptions.algorithms = options.algorithms;

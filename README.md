@@ -31,7 +31,11 @@ var SFTPServer=require('node-sftp-server');
 ### constructor
 
 ```js
-var myserver = new SFTPServer({ privateKeyFile: "path_to_private_key_file" });
+var myServerFromPrivateKeyPath = new SFTPServer({ privateKeyFile: "path_to_private_key_file" });
+
+// Alternatively (when Buffer.isBuffer(options.privateKeyFile) is true, node-sftp-server knows to use that as the host key)
+var myServerFromPrivateKeyBuffer = new SFTPServer({ privateKeyFile: fs.readFileSync("path_to_private_key_file") });
+
 ```
 
 This returns a new `SFTPServer()` object, which is an EventEmitter. If the private
